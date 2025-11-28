@@ -4,47 +4,104 @@
   <title>My Portfolio</title>
   <style>
     body {
-      background: linear-gradient(135deg, #12c2e9, #c471ed, #f64f59);
-      color: white;
       font-family: 'Noto Sans KR', Arial, sans-serif;
+      background: linear-gradient(135deg, #bbf7d0, #a5b4fc, #f0abfc);
       margin: 0;
       padding: 0;
-      min-height: 100vh;
+      color: #222;
     }
-    h1 {
-      margin-top: 50px;
-      font-size: 3em;
-      text-shadow: 2px 2px 8px #333;
-      text-align: center;
+    nav {
+      background: #fff;
+      box-shadow: 0 2px 12px #0002;
+      border-radius: 0 0 16px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-    .global-section {
-      background: rgba(0,0,0,0.3);
-      border-radius: 12px;
-      padding: 20px;
-      width: 60%;
-      margin: 40px auto;
-      box-shadow: 0 0 16px #fff3;
-      text-align: center;
-    }
-    a {
-      color: #ffe869;
+    nav a {
+      padding: 18px 32px;
+      margin: 0 8px;
+      text-decoration: none;
+      color: #5C40E7;
       font-weight: 700;
-      font-size:1.2em;
+      font-size: 1.12em;
+      border-radius: 6px;
+      transition: background 0.2s, color 0.2s;
     }
-    a:hover {
-      color: #fff;
-      text-shadow: 0 0 10px #ff9800;
+    nav a:hover {
+      background: #e0e7ff;
+      color: #2563eb;
     }
+    section {
+      max-width: 780px;
+      margin: 48px auto;
+      background: rgba(255,255,255,0.9);
+      box-shadow: 0 4px 24px #6EE7B7;
+      border-radius: 16px;
+      padding: 32px;
+    }
+    section:not(:first-of-type) { margin-top: 80px; }
+    h2 { border-bottom: 1.5px solid #5C40E7; padding-bottom: 8px;}
   </style>
-  <!-- 구글 폰트 추가(옵션) -->
-  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <h1>🚀 Hello! Welcome to my portfolio. 😎</h1>
-  <a href="#global">✨ Global로 이동 ✨</a>
-  <div class="global-section" id="global">
-    <h2>🔥 Global Section 🔥</h2>
-    <p>This is the global section! <br>여기서 마음껏 포트폴리오를 꾸며보세요.</p>
-  </div>
+  <!-- 상단 카테고리 메뉴 -->
+  <nav>
+    <a href="#home">홈</a>
+    <a href="#activity">활동</a>
+    <a href="#language">어학자격증</a>
+    <a href="#scholarship">장학금</a>
+    <a href="#subject">교과</a>
+    <a href="#program">프로그램</a>
+    <a href="#edisc">성향(e-DISC)</a>
+    <a href="#story">스토리</a>
+    <a href="#badges">디지털배지3품</a>
+    <a href="#goal">목표</a>
+  </nav>
+
+  <!-- 각각의 섹션 (내용은 예시/비어 있음) -->
+  <section id="home">
+    <h2>홈</h2>
+    <p>환영합니다! 나의 포트폴리오 홈페이지입니다.</p>
+  </section>
+  <section id="activity">
+    <h2>활동</h2>
+    <p>동아리, 대외활동 등 주요 활동 내용을 적으세요.</p>
+  </section>
+  <section id="language">
+    <h2>어학자격증</h2>
+    <p>자격증, 자기소개, 시험점수 등 기록!</p>
+  </section>
+  <section id="scholarship">
+    <h2>장학금</h2>
+    <p>장학금 수상내역 등 적어주세요.</p>
+  </section>
+  <section id="subject">
+    <h2>교과</h2>
+    <p>수강 과목, 성적, 학점 등 주요 이수 교과목 기록!</p>
+  </section>
+  <section id="program">
+    <h2>프로그램</h2>
+    <p>참여한 프로그램, 교육, 연수 등.</p>
+  </section>
+  <section id="edisc">
+    <h2>성향(e-DISC)</h2>
+    <p>성향 분석(e-DISC) 결과 등.</p>
+  </section>
+  <section id="story">
+    <h2>스토리</h2>
+    <p>내 경험, 성장 스토리, 자기소개 등!</p>
+  </section>
+  <section id="badges">
+    <h2>디지털배지3품</h2>
+    <p>디지털 배지, 수상 인증·기록을 남기세요.</p>
+  </section>
+  <section id="goal">
+    <h2>목표</h2>
+    <p>앞으로의 목표, 꿈, 계획 등!</p>
+  </section>
 </body>
 </html>

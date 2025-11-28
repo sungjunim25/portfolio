@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>임성준의 포트폴리오</title>
+  <title>如雲</title>
   <style>
     /* 전체 타이포 & 여백 */
     body {
@@ -79,23 +79,27 @@
     .profile-left { flex: 2; }
     .profile-right {
       flex: 1;
-      display: flex; flex-direction: column; align-items: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       gap: 20px;
     }
 
+    /* 프로필 사진: 우측 영역 꽉 차게 (네모) */
     .profile-photo {
-      width: 150px;
-      height: 150px;
+      width: 100%;
+      max-width: 320px;
+      height: auto;
       object-fit: cover;
-      border-radius: 50%;
+      border-radius: 12px;
       border: 4px solid #90CAF9;
     }
 
-    .keyword {font-size: 18px;font-weight:700;color:#11559c;margin-bottom:4px;}
-    .selfintro {font-size: 12px;color:#555;margin-bottom:8px;}
-    .kor-name {font-size: 16px;font-weight:600;}
-    .eng-name {font-size: 11px;color:#1073bb;}
-    .school-list {font-size: 13px;margin:10px 0 18px 0;}
+    .keyword {font-size: 20px;font-weight:700;color:#11559c;margin-bottom:4px;}
+    .selfintro {font-size: 14px;color:#555;margin-bottom:8px;}
+    .kor-name {font-size: 18px;font-weight:600;}
+    .eng-name {font-size: 13px;color:#1073bb;}
+    .school-list {font-size: 14px;margin:10px 0 18px 0;}
     .school-list div {margin-bottom:4px;}
 
     /* GPA/이수학점 – 숫자+문자 모두 원 안 */
@@ -162,33 +166,48 @@
       box-shadow:0 1px 4px #90caf940;
     }
 
-    /* 동아리 토글 – 한 줄 버튼 + 아래 공통 설명 */
+    /* 동아리 – 동그라미 + 클릭 시에만 설명 */
     .club-row {
       display:flex;
       flex-wrap:wrap;
-      gap:10px;
-      margin:6px 0 8px;
+      gap:14px;
+      margin:10px 0 6px;
     }
     .club-toggle {
-      background:#fff;
-      border-radius:16px;
-      padding:8px 15px;
-      font-size:12px;
-      font-weight:700;
-      cursor:pointer;
-      box-shadow:0 0.5px 2px #bad2ee66;
-      transition:background 0.1s, color 0.1s, transform 0.05s;
+      width:90px;
+      height:90px;
+      border-radius:50%;
+      background:#ffffff;
+      box-shadow:0 1px 5px #b5ceee88;
       border:none;
+      cursor:pointer;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      font-size:11px;
+      font-weight:700;
+      color:#0d47a1;
+      line-height:1.3;
+      text-align:center;
+      transition:background 0.12s, color 0.12s, transform 0.06s;
     }
+    .club-toggle span.year {font-size:12px;margin-bottom:2px;}
+    .club-toggle span.name {font-size:12px;}
+    .club-toggle span.type {font-size:11px;color:#546e7a;}
+    .club-toggle.active {
+      background:#1976d2;
+      color:#ffffff;
+    }
+    .club-toggle.active span.type {color:#e3f2fd;}
     .club-toggle:hover {transform:translateY(-1px);}
-    .club-toggle.active {background:#1976D2;color:#fff;}
     .club-description-area {
       background:#ECF5FF;
       border-radius:10px;
       padding:9px 14px;
       font-size:13px;
-      min-height:32px;
-      margin-top:4px;
+      margin-top:14px;  /* 간격 넓힘: 4px → 14px */
+      display:none; /* 기본 숨김 */
     }
 
     /* 어학·자격증 */
@@ -317,18 +336,29 @@
   </style>
 
   <script>
-    // 동아리 버튼 한 줄 + 공통 설명 영역
-    const clubDescriptions = {
-      'mimic': '수학과 학술동아리 MIMIC 부원.',
+    // 동아리 – 동그라미 + 설명 토글
+    const clubDescriptionsCircle = {
+      'mimic': '(성균 명품 스터디클럽) 수학과 학술동아리 MIMIC 부원.',
       'band': '중앙 통기타 동아리 못갖춘마디 부원.',
       'volunteer': '중앙 봉사동아리 사람사랑 부원.',
       'buddy': '학부대학 주관 LC82 미분적분학1/영어쓰기 어깨동무 프로그램 대표학생.'
     };
-    function selectClub(key, el) {
+    function toggleClubCircle(key, el) {
+      const descBox = document.getElementById('club-desc-box');
+      const isAlreadyActive = el.classList.contains('active');
+
+      // 모두 비활성화
       document.querySelectorAll('.club-toggle').forEach(btn => btn.classList.remove('active'));
-      el.classList.add('active');
-      const box = document.getElementById('club-desc-box');
-      box.textContent = clubDescriptions[key] || '';
+
+      if (isAlreadyActive) {
+        // 다시 클릭하면 설명 숨김
+        descBox.style.display = 'none';
+        descBox.textContent = '';
+      } else {
+        el.classList.add('active');
+        descBox.textContent = clubDescriptionsCircle[key] || '';
+        descBox.style.display = 'block';
+      }
     }
 
     // 교과 상세 토글
@@ -337,18 +367,12 @@
       if (!row) return;
       row.style.display = (row.style.display === 'table-row') ? 'none' : 'table-row';
     }
-
-    // 페이지 로드시 첫 동아리 선택
-    window.addEventListener('DOMContentLoaded', () => {
-      const first = document.querySelector('.club-toggle[data-club="mimic"]');
-      if (first) first.click();
-    });
   </script>
 </head>
 <body>
   <header>
     <div class="nav-main">
-      <div class="title">임성준의 포트폴리오</div>
+      <div class="title">포르폴리오 제목</div>
       <nav class="nav-categories">
         <a href="#home">홈</a>
         <a href="#activity">활동</a>
@@ -369,16 +393,17 @@
     <section class="section" id="home">
       <div class="flex-h">
         <div class="profile-left">
-          <div class="keyword">나의 키워드</div>
-          <div class="selfintro">안녕하세요, 성균관대학교 임성준입니다!</div>
+          <div class="keyword">如雲</div>
+          <div class="selfintro">하늘에 떠 있는 구름처럼 다채로운</div>
           <div style="margin-bottom:6px;">
             <span class="kor-name">임성준</span> &nbsp;
             <span class="eng-name">IM SUNGJUN</span>
           </div>
           <div class="school-list">
-            <div>🎓 ~2022 · 민족사관고등학교</div>
+            <div>🎓 2022~2025 · 강원 민족사관고등학교</div>
             <div>🎓 2025 · 성균관대학교 자연과학계열 입학</div>
-            <div>🎓 2026~ · 성균관대학교 자연과학대학 화학과(예정)</div>
+            <div>🎓 2026 · 성균관대학교 자연과학대학 화학과 전공진입 (예정)</div>
+            <div>🎓 2026~ · 성균관대학교 자연과학대학 화학과 (예정)</div>
           </div>
 
           <div class="circle-wrap">
@@ -407,8 +432,8 @@
         </div>
 
         <div class="profile-right">
-          <!-- 프로필 사진 경로 바꾸기 -->
-          <img src="your_photo.jpg" alt="프로필 사진" class="profile-photo">
+          <!-- 프로필 사진 경로: 실제 파일명으로 변경 -->
+          <img src="sungjun.jpg" alt="프로필 사진" class="profile-photo">
         </div>
       </div>
     </section>
@@ -416,25 +441,41 @@
     <!-- 활동 -->
     <section class="section" id="activity">
       <div class="activity-title">💡 활동</div>
+
       <div class="activity-sub">📌 주요활동</div>
       <div class="activity-list">
         <div class="activity-item">2025 · 성균관대학교 <b>LC82 피어리더</b></div>
+        <div class="activity-item">2026 · 성균관대학교 화학과 <b>학생회 재정부원 (하고싶음)</b></div>
       </div>
 
       <div class="activity-sub">🎶 동아리 · 봉사활동</div>
       <div class="club-row">
         <button class="club-toggle" data-club="mimic"
-                onclick="selectClub('mimic', this)"><b>2025</b> · MIMIC 동아리</button>
+                onclick="toggleClubCircle('mimic', this)">
+          <span class="year">2025</span>
+          <span class="name">MIMIC</span>
+          <span class="type">동아리</span>
+        </button>
         <button class="club-toggle" data-club="band"
-                onclick="selectClub('band', this)"><b>2025</b> · 못갖춘마디 동아리</button>
+                onclick="toggleClubCircle('band', this)">
+          <span class="year">2025</span>
+          <span class="name">못갖춘마디</span>
+          <span class="type">동아리</span>
+        </button>
         <button class="club-toggle" data-club="volunteer"
-                onclick="selectClub('volunteer', this)"><b>2025</b> · 사람사랑 동아리</button>
+                onclick="toggleClubCircle('volunteer', this)">
+          <span class="year">2025</span>
+          <span class="name">사람사랑</span>
+          <span class="type">동아리</span>
+        </button>
         <button class="club-toggle" data-club="buddy"
-                onclick="selectClub('buddy', this)"><b>2025</b> · 어깨동무 스터디그룹</button>
+                onclick="toggleClubCircle('buddy', this)">
+          <span class="year">2025</span>
+          <span class="name">어깨동무</span>
+          <span class="type">스터디그룹</span>
+        </button>
       </div>
-      <div id="club-desc-box" class="club-description-area">
-        <!-- 선택된 동아리 설명 표시 -->
-      </div>
+      <div id="club-desc-box" class="club-description-area"></div>
     </section>
 
     <!-- 어학/자격증 -->
@@ -470,9 +511,10 @@
         </span>
 
         <span class="cert-box">
-          <span class="cert-emoji">🪙</span>
+          <span class="cert-emoji">📜</span>
           <span class="cert-name-main">한국사</span>
-          <span class="cert-subline">능력검정시험 3급</span>
+          <span class="cert-subline">능력검정시험</span>
+          <span class="cert-subline">3급</span>
           <span class="cert-org">(국사편찬위원회)</span>
         </span>
       </div>
@@ -484,6 +526,8 @@
       <div class="scholarship-list">
         <div class="scholar-box">2025-1 · 교외 · 메가스터디교육㈜</div>
         <div class="scholar-box">2025-2 · 교내 · 성적우수장학금(우수)</div>
+        <div class="scholar-box">2025-2 · 교내 · 학생성공 창의장학금 (받고싶음)</div>
+        <div class="scholar-box">2026-1 · 교내 · 성적우수장학금(최우수) (못받음)</div>
       </div>
     </section>
 
@@ -512,12 +556,12 @@
             <div class="course-statusbar">
               <div class="course-progress" style="width:0%"></div>
             </div>
-            <div class="status-label">0% · 진행중</div>
+            <div class="status-label">0% · 진행예정</div>
           </td>
         </tr>
         <tr class="course-detail-row" data-course="core">
           <td colspan="5" class="course-detail-cell">
-            수강 과목 예정: 추후 업데이트
+            2026-1 물리화학1, 유기화학1, 분석화학1 (수강예정)
           </td>
         </tr>
 
@@ -527,7 +571,7 @@
             <div class="course-statusbar">
               <div class="course-progress" style="width:0%"></div>
             </div>
-            <div class="status-label">0% · 진행중</div>
+            <div class="status-label">0% · 진행예정</div>
           </td>
         </tr>
         <tr class="course-detail-row" data-course="deep">
@@ -542,12 +586,12 @@
             <div class="course-statusbar">
               <div class="course-progress" style="width:0%"></div>
             </div>
-            <div class="status-label">0% · 진행중</div>
+            <div class="status-label">0% · 진행예정</div>
           </td>
         </tr>
         <tr class="course-detail-row" data-course="lab">
           <td colspan="5" class="course-detail-cell">
-            수강 과목 예정: 추후 업데이트
+            2026-1 물리화학실험1 (수강예정)
           </td>
         </tr>
 
@@ -572,12 +616,12 @@
             <div class="course-statusbar">
               <div class="course-progress" style="width:0%"></div>
             </div>
-            <div class="status-label">0% · 진행중</div>
+            <div class="status-label">0% · 진행예정</div>
           </td>
         </tr>
         <tr class="course-detail-row" data-course="leadership">
           <td colspan="5" class="course-detail-cell">
-            2025-겨울 실천리더십
+            2025-겨울 실천리더십 (수강예정)
           </td>
         </tr>
 
@@ -592,8 +636,8 @@
         </tr>
         <tr class="course-detail-row" data-course="global">
           <td colspan="5" class="course-detail-cell">
-            2025-1 과학영어<br>
-	2025-2 영어쓰기
+            2025-1 과학영어*<br>
+            2025-2 영어쓰기* (수강중)
           </td>
         </tr>
 
@@ -609,7 +653,7 @@
         <tr class="course-detail-row" data-course="comm">
           <td colspan="5" class="course-detail-cell">
             2025-1 창의적글쓰기<br>
-	2025-2 학술적글쓰기
+            2025-2 학술적글쓰기 (수강중)
           </td>
         </tr>
 
@@ -624,7 +668,7 @@
         </tr>
         <tr class="course-detail-row" data-course="creative">
           <td colspan="5" class="course-detail-cell">
-            2025-2 창의적융합디자인
+            2025-2 창의적융합디자인 (수강중)
           </td>
         </tr>
 
@@ -639,9 +683,27 @@
         </tr>
         <tr class="course-detail-row" data-course="basis">
           <td colspan="5" class="course-detail-cell">
-            2025-1 미분적분학1, 일반화학1, 일반화학실험1<br>
-            2025-2 미분적분학2, 선형대수학, 이산수학, 일반물리학2, 일반화학2, 일반화학실험2<br>
-            2025-겨울 일반물리학1
+            2025-1 미분적분학1*, 일반화학1*, 일반화학실험1*<br>
+            2025-2 미분적분학2<br>
+            2025-2 선형대수학*, 이산수학, 일반물리학2*, 일반화학2*, 일반화학실험2* (수강중)<br>
+            2025-겨울 일반물리학1* (수강예정)
+          </td>
+        </tr>
+
+        <tr class="course-row" onclick="toggleCourseDetail('basis-exp')">
+          <td>인문사회과학/자연과학기반(실습)</td><td>3</td><td>1</td><td>2</td>
+          <td>
+            <div class="course-statusbar">
+              <div class="course-progress" style="width:33.3%"></div>
+            </div>
+            <div class="status-label">약 33% · 진행중</div>
+          </td>
+        </tr>
+        <tr class="course-detail-row" data-course="basis-exp">
+          <td colspan="5" class="course-detail-cell">
+            2025-1 일반화학실험1*<br>
+            2025-2 일반화학실험2* (수강중)<br>
+            2026-1 일반물리학실험1 (수강예정)
           </td>
         </tr>
 
@@ -651,12 +713,12 @@
             <div class="course-statusbar">
               <div class="course-progress" style="width:0%"></div>
             </div>
-            <div class="status-label">0% · 진행중</div>
+            <div class="status-label">0% · 진행예정</div>
           </td>
         </tr>
         <tr class="course-detail-row" data-course="human">
           <td colspan="5" class="course-detail-cell">
-            수강 과목 예정: 추후 업데이트
+            2026-1 예술사 (수강예정)
           </td>
         </tr>
 
@@ -666,17 +728,17 @@
             <div class="course-statusbar">
               <div class="course-progress" style="width:0%"></div>
             </div>
-            <div class="status-label">0% · 진행중</div>
+            <div class="status-label">0% · 진행예정</div>
           </td>
         </tr>
         <tr class="course-detail-row" data-course="society">
           <td colspan="5" class="course-detail-cell">
-            수강 과목 예정: 추후 업데이트
+            2026-2 현대민주주의의이해 (수강예정)
           </td>
         </tr>
 
         <tr class="course-row" onclick="toggleCourseDetail('science')">
-          <td>자연/과학/기술</td><td>0</td><td>0</td><td>0</td>
+          <td>자연/과학/기술</td><td>-</td><td>0</td><td>-</td>
           <td>
             <div class="course-statusbar">
               <div class="course-progress" style="width:100%"></div>
@@ -686,12 +748,12 @@
         </tr>
         <tr class="course-detail-row" data-course="science">
           <td colspan="5" class="course-detail-cell">
-            (기준 없음)
+            2026-1 우주론 (수강예정)
           </td>
         </tr>
 
         <tr class="course-row" onclick="toggleCourseDetail('general')">
-          <td>일반선택</td><td>0</td><td>4</td><td>0</td>
+          <td>일반선택</td><td>-</td><td>4</td><td>-</td>
           <td>
             <div class="course-statusbar">
               <div class="course-progress" style="width:100%"></div>
@@ -702,8 +764,8 @@
         <tr class="course-detail-row" data-course="general">
           <td colspan="5" class="course-detail-cell">
             2025-1 FYE세미나I<br>
-	2025-도전 AI기반전략적의사결정<br>
-	2025-2 FYE세미나II
+            2025-도전 AI기반전략적의사결정<br>
+            2025-2 FYE세미나II (수강중)
           </td>
         </tr>
 
@@ -728,15 +790,22 @@
             <div class="course-statusbar">
               <div class="course-progress" style="width:0%"></div>
             </div>
-            <div class="status-label">0% · 진행중</div>
+            <div class="status-label">0% · 진행예정</div>
           </td>
         </tr>
         <tr class="course-detail-row" data-course="dsCommon">
           <td colspan="5" class="course-detail-cell">
-            수강 과목 예정: 추후 업데이트
+            2026-1 데이터분석과AI기초 (예정)
           </td>
         </tr>
       </table>
+
+      <!-- 교과 안내문 추가 -->
+      <div style="margin-top:10px; font-size:12px; color:#455a64; line-height:1.5;">
+        구분을 클릭하시면 영역별 세부 이수 현황(수강완료/수강중/수강예정)을 확인하실 수 있습니다.<br>
+        * 표시는 국제어수업을 통해 해당 교과를 이수하였음을 의미합니다.<br>
+        '인문사회과학/자연과학기반(실습)' 영역은 '인문사회과학/자연과학기반' 영역에 포함되나, 자연과학대학 졸업요건 충족 여부를 확인하기 위하여 별도로 	구분하였습니다.
+      </div>
     </section>
 
     <!-- 프로그램 -->
@@ -746,10 +815,15 @@
         <!-- 프로그램 사진 경로 바꾸기 -->
         <img src="program_photo.jpg" alt="2025 2학기 LC 포트폴리오 경진대회" class="program-photo">
         <div class="program-desc">
-          2025 2학기<br><span class="program-name">LC 포트폴리오 경진대회</span>
+          2025 2학기<br><span class="program-name">LC 포트폴리오 경진대회 (우수상)</span>
         </div>
       </div>
     </section>
   </main>
+
+  <!-- 하단 카피라이트 -->
+  <footer style="text-align:center; padding:12px 0 16px; font-size:12px; color:#607d8b;">
+    ⓒ 2025 Sungjun Im
+  </footer>
 </body>
 </html>

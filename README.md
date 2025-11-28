@@ -1,2 +1,4 @@
 # portfolio
-Seoul, South Korea
+Sungjun Im
+Sungkyunkwan University
+Suwon, South Korea

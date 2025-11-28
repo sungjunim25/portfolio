@@ -1,111 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
+  <meta charset="UTF-8">
   <title>My Portfolio</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
     body {
-      font-family: 'Noto Sans KR', Arial, sans-serif;
-      background: linear-gradient(135deg, #bbf7d0, #a5b4fc, #f0abfc);
       margin: 0;
       padding: 0;
+      font-family: 'Noto Sans KR', Arial, sans-serif;
+      background: #f6f7fb;
       color: #222;
     }
-    nav {
-      background: #fff;
-      box-shadow: 0 2px 12px #0002;
-      border-radius: 0 0 16px 16px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      position: sticky;
+    header {
+      position: fixed;
       top: 0;
-      z-index: 100;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      box-shadow: 0 2px 6px #0002;
+      z-index: 999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 0 2px 0;
+    }
+    nav {
+      display: flex;
+      gap: 18px;
+      padding: 0;
+      margin: 0;
     }
     nav a {
-      padding: 18px 32px;
-      margin: 0 8px;
       text-decoration: none;
-      color: #5C40E7;
+      color: #3c3c9a;
       font-weight: 700;
-      font-size: 1.12em;
-      border-radius: 6px;
+      padding: 14px 8px;
+      border-radius: 5px 5px 0 0;
       transition: background 0.2s, color 0.2s;
+      font-size: 1em;
+      letter-spacing:0.01em;
     }
     nav a:hover {
-      background: #e0e7ff;
-      color: #2563eb;
+      background: #ecf0ff;
+      color: #7854e6;
+    }
+    .container {
+      max-width: 800px;
+      margin: 80px auto 0 auto;
+      padding: 24px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 32px #dee2e6;
     }
     section {
-      max-width: 780px;
-      margin: 48px auto;
-      background: rgba(255,255,255,0.9);
-      box-shadow: 0 4px 24px #6EE7B7;
-      border-radius: 16px;
-      padding: 32px;
+      margin-bottom: 54px;
     }
-    section:not(:first-of-type) { margin-top: 80px; }
-    h2 { border-bottom: 1.5px solid #5C40E7; padding-bottom: 8px;}
-  </style>
-</head>
-<body>
-  <!-- 상단 카테고리 메뉴 -->
-  <nav>
-    <a href="#home">홈</a>
-    <a href="#activity">활동</a>
-    <a href="#language">어학자격증</a>
-    <a href="#scholarship">장학금</a>
-    <a href="#subject">교과</a>
-    <a href="#program">프로그램</a>
-    <a href="#edisc">성향(e-DISC)</a>
-    <a href="#story">스토리</a>
-    <a href="#badges">디지털배지3품</a>
-    <a href="#goal">목표</a>
-  </nav>
-
-  <!-- 각각의 섹션 (내용은 예시/비어 있음) -->
-  <section id="home">
-    <h2>임성준</h2>
-    <p>Sungjun Im</p>
-  </section>
-  <section id="activity">
-    <h2>활동</h2>
-    <p>동아리, 대외활동 등 주요 활동 내용을 적으세요.</p>
-    <p> 2025·수학과 학술동아리 MIMIC 부원</p>
-    <p> 2025-1·중앙 통기타 동아리 못갖춘마디 부원</p>
-    <p> 2025-2·중앙 봉사 동아리 사람사랑 부원</p>
-  </section>
-  <section id="language">
-    <h2>어학자격증</h2>
-    <p>자격증, 자기소개, 시험점수 등 기록!</p>
-  </section>
-  <section id="scholarship">
-    <h2>🎓장학금</h2>
-    <p> 2025-1·교외·메가스터디교육㈜</p>
-    <p> 2025-2·교내·성적우수장학금(우수)</p>
-  </section>
-  <section id="subject">
-    <h2>교과</h2>
-    <p>수강 과목, 성적, 학점 등 주요 이수 교과목 기록!</p>
-  </section>
-  <section id="program">
-    <h2>프로그램</h2>
-    <p>참여한 프로그램, 교육, 연수 등.</p>
-  </section>
-  <section id="edisc">
-    <h2>성향(e-DISC)</h2>
-    <p>성향 분석(e-DISC) 결과 등.</p>
-  </section>
-  <section id="story">
-    <h2>스토리</h2>
-    <p>내 경험, 성장 스토리, 자기소개 등!</p>
-  </section>
-  <section id="badges">
-    <h2>디지털배지3품</h2>
-    <p>디지털 배지, 수상 인증·기록을 남기세요.</p>
-  </section>
-  <section id="goal">
-    <h2>목표</h2>
-    <p>앞으로의 목표, 꿈, 계획 등!</p>
-  </section>
-</body>
-</html>
+    h2 {
+      color: #6650e4;
+      margin-top:0;
+      font-size:2em;
+      border-bottom: 1.5px solid #ebe8ff;
+      padding-bottom:12px;
+    }
+    .go-btn {
+      display:inline-block;
+      padding:12px 24px;
+      background: #e8def8;
+      color: #7854e6;
+      font-weight: 700;
+      border:none;
+      border-radius: 24px;
+      box-shadow
+

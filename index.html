@@ -85,7 +85,6 @@
       gap: 20px;
     }
 
-    /* 프로필 사진: 우측 영역 꽉 차게 (네모) */
     .profile-photo {
       width: 100%;
       max-width: 320px;
@@ -102,7 +101,6 @@
     .school-list {font-size: 14px;margin:10px 0 18px 0;}
     .school-list div {margin-bottom:4px;}
 
-    /* GPA/이수학점 – 숫자+문자 모두 원 안 */
     .circle-wrap {display:flex;gap:12px;margin-bottom:14px;}
     .circle {
       background:#1976d2;
@@ -152,7 +150,6 @@
       transform:translateY(-1px);
     }
 
-    /* 활동 */
     .activity-title {font-size:18px;font-weight:700;margin-bottom:4px;}
     .activity-sub {font-size:15px;margin-top:18px;margin-bottom:6px;}
     .activity-list {margin-top:4px;}
@@ -166,7 +163,6 @@
       box-shadow:0 1px 4px #90caf940;
     }
 
-    /* 동아리 – 동그라미 + 클릭 시에만 설명 */
     .club-row {
       display:flex;
       flex-wrap:wrap;
@@ -206,11 +202,10 @@
       border-radius:10px;
       padding:9px 14px;
       font-size:13px;
-      margin-top:14px;  /* 간격 넓힘: 4px → 14px */
-      display:none; /* 기본 숨김 */
+      margin-top:14px;
+      display:none;
     }
 
-    /* 어학·자격증 */
     .lang-cert-title {font-size:18px;font-weight:700;margin-bottom:8px;}
     .certs-list {margin-top:6px;}
     .cert-box {
@@ -225,6 +220,7 @@
       line-height:1.6;
       text-align:center;
       min-width:140px;
+      cursor:pointer;
     }
     .cert-emoji {
       font-size:22px;
@@ -247,7 +243,23 @@
       margin-top:2px;
     }
 
-    /* 장학금 */
+    /* 자격증 설명 박스 (하단 공용) */
+    .cert-description-area {
+      background:#ECF5FF;
+      border-radius:10px;
+      padding:10px 14px;
+      font-size:13px;
+      margin-top:14px;
+      display:none;
+    }
+    .cert-description-area img {
+      max-width:280px;
+      width:100%;
+      border-radius:8px;
+      display:block;
+      margin-top:6px;
+    }
+
     .scholar-title {font-size:18px;font-weight:700;margin-bottom:8px;}
     .scholarship-list {margin-top:6px;}
     .scholar-box {
@@ -259,7 +271,6 @@
       box-shadow:0 .5px 3px #bdd0ed33;
     }
 
-    /* 교과 진행 */
     .course-title {font-size:18px;font-weight:700;margin-bottom:10px;}
     .course-header-circles {
       display:flex;
@@ -303,7 +314,6 @@
     }
     .course-table td:last-child {text-align:left;}
 
-    /* 교과 상세(수강과목) – 토글 */
     .course-row {cursor:pointer;}
     .course-row:hover {background:#f4f8ff;}
     .course-detail-row {display:none;background:#f9fbff;}
@@ -314,7 +324,6 @@
       color:#1a304f;
     }
 
-    /* 프로그램 */
     .program-title {font-size:18px;font-weight:700;margin-bottom:8px;}
     .program-card {
       background:#fff;
@@ -326,8 +335,8 @@
       box-shadow:0 1px 6px #bbdeff33;
     }
     .program-photo {
-      width:170px;
-      height:90px;
+      width:200px;
+      height:275px;
       object-fit:cover;
       border-radius:7px;
     }
@@ -336,22 +345,17 @@
   </style>
 
   <script>
-    // 동아리 – 동그라미 + 설명 토글
     const clubDescriptionsCircle = {
       'mimic': '(성균 명품 스터디클럽) 수학과 학술동아리 MIMIC 부원.',
       'band': '중앙 통기타 동아리 못갖춘마디 부원.',
       'volunteer': '중앙 봉사동아리 사람사랑 부원.',
-      'buddy': '학부대학 주관 LC82 미분적분학1/영어쓰기 어깨동무 프로그램 대표학생.'
+      'buddy': '학부대학 주관 LC82 (1학기) 미분적분학1, (2학기) 영어쓰기 어깨동무 프로그램 대표학생.'
     };
     function toggleClubCircle(key, el) {
       const descBox = document.getElementById('club-desc-box');
       const isAlreadyActive = el.classList.contains('active');
-
-      // 모두 비활성화
       document.querySelectorAll('.club-toggle').forEach(btn => btn.classList.remove('active'));
-
       if (isAlreadyActive) {
-        // 다시 클릭하면 설명 숨김
         descBox.style.display = 'none';
         descBox.textContent = '';
       } else {
@@ -361,29 +365,100 @@
       }
     }
 
-    // 교과 상세 토글
     function toggleCourseDetail(key) {
       const row = document.querySelector('.course-detail-row[data-course="'+key+'"]');
       if (!row) return;
       row.style.display = (row.style.display === 'table-row') ? 'none' : 'table-row';
+    }
+
+    function toggleVisionDetail(key) {
+      const box = document.getElementById('vision-' + key);
+      if (!box) return;
+      box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+    }
+
+    function toggleBadgeDetail(key) {
+      const box = document.getElementById('badge-detail-' + key);
+      if (!box) return;
+      box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+    }
+
+    // 자격증 클릭 시 하단 공용 박스에 표시
+    const certInfo = {
+      'toeic': {
+        title: 'TOEIC 875점 (2025.06)',
+        org: 'ETS / YBM 한국 TOEIC위원회',
+        img: 'toeic.png',
+        alt: 'TOEIC 성적표'
+      },
+      'diat-pre': {
+        title: 'DIAT 프레젠테이션 고급 (2018.06)',
+        org: 'KAIT 한국정보통신진흥협회',
+        img: 'diat_presentation_cert.jpg',
+        alt: 'DIAT 프레젠테이션 자격증'
+      },
+      'diat-word': {
+        title: 'DIAT 워드프로세서 고급 (2018.11)',
+        org: 'KAIT 한국정보통신진흥협회',
+        img: 'diat_word_cert.jpg',
+        alt: 'DIAT 워드프로세서 자격증'
+      },
+      'diat-sheet': {
+        title: 'DIAT 스프레드시트 고급 (2019.03)',
+        org: 'KAIT 한국정보통신진흥협회',
+        img: 'diat_sheet_cert.jpg',
+        alt: 'DIAT 스프레드시트 자격증'
+      },
+      'kor-history': {
+        title: '한국사능력검정시험 3급 (2020.07)',
+        org: '국사편찬위원회',
+        img: 'historyexam.png',
+        alt: '한국사능력검정시험 인증서'
+      }
+    };
+
+    function toggleCertImage(key) {
+      const box = document.getElementById('cert-desc-box');
+      if (!box) return;
+      const data = certInfo[key];
+      // 같은 거 또 누르면 접기
+      if (box.dataset.current === key && box.style.display === 'block') {
+        box.style.display = 'none';
+        box.dataset.current = '';
+        return;
+      }
+      if (data) {
+        box.querySelector('.cert-desc-title').textContent = data.title;
+        box.querySelector('.cert-desc-org').textContent = data.org;
+        box.querySelector('img').src = data.img;
+        box.querySelector('img').alt = data.alt;
+        box.style.display = 'block';
+        box.dataset.current = key;
+      }
+    }
+
+    function toggleFutureCert() {
+      const box = document.getElementById('future-cert-box');
+      if (!box) return;
+      box.style.display = (box.style.display === 'block') ? 'none' : 'block';
     }
   </script>
 </head>
 <body>
   <header>
     <div class="nav-main">
-      <div class="title">포르폴리오 제목</div>
+      <div class="title">포트폴리오 제목</div>
       <nav class="nav-categories">
         <a href="#home">홈</a>
         <a href="#activity">활동</a>
         <a href="#langcert">어학·자격증</a>
-        <a href="#scholar">장학금</a>
+        <a href="#scholar">수상·장학금</a>
         <a href="#courses">교과</a>
         <a href="#program">프로그램</a>
+        <a href="#badge">디지털 배지·3품</a>
+        <a href="#vision">목표와 비전</a>
         <a href="#">성향(e-DISC)</a>
         <a href="#">스토리</a>
-        <a href="#">디지털 배지·3품</a>
-        <a href="#">목표</a>
       </nav>
     </div>
   </header>
@@ -400,7 +475,7 @@
             <span class="eng-name">IM SUNGJUN</span>
           </div>
           <div class="school-list">
-            <div>🎓 2022~2025 · 강원 민족사관고등학교</div>
+            <div>🎓 ~2022 · 민족사관고등학교</div>
             <div>🎓 2025 · 성균관대학교 자연과학계열 입학</div>
             <div>🎓 2026 · 성균관대학교 자연과학대학 화학과 전공진입 (예정)</div>
             <div>🎓 2026~ · 성균관대학교 자연과학대학 화학과 (예정)</div>
@@ -432,7 +507,6 @@
         </div>
 
         <div class="profile-right">
-          <!-- 프로필 사진 경로: 실제 파일명으로 변경 -->
           <img src="sungjun.jpg" alt="프로필 사진" class="profile-photo">
         </div>
       </div>
@@ -445,7 +519,6 @@
       <div class="activity-sub">📌 주요활동</div>
       <div class="activity-list">
         <div class="activity-item">2025 · 성균관대학교 <b>LC82 피어리더</b></div>
-        <div class="activity-item">2026 · 성균관대학교 화학과 <b>학생회 재정부원 (하고싶음)</b></div>
       </div>
 
       <div class="activity-sub">🎶 동아리 · 봉사활동</div>
@@ -482,48 +555,104 @@
     <section class="section" id="langcert">
       <div class="lang-cert-title">📚 어학 · 자격증</div>
       <div class="certs-list">
-        <span class="cert-box">
+        <span class="cert-box" onclick="toggleCertImage('toeic')">
           <span class="cert-emoji">📝</span>
           <span class="cert-name-main">TOEIC</span>
           <span class="cert-subline">875점</span>
+          <span class="cert-subline">2025.06</span>
           <span class="cert-org">(ETS / YBM<br>한국 TOEIC위원회)</span>
         </span>
 
-        <span class="cert-box">
+        <span class="cert-box" onclick="toggleCertImage('diat-pre')">
           <span class="cert-emoji">💻</span>
           <span class="cert-name-main">DIAT</span>
-          <span class="cert-subline">프레젠테이션</span>
+          <span class="cert-subline">프레젠테이션 고급</span>
+          <span class="cert-subline">2018.06</span>
           <span class="cert-org">(KAIT 한국정보<br>통신진흥협회)</span>
         </span>
 
-        <span class="cert-box">
+        <span class="cert-box" onclick="toggleCertImage('diat-word')">
           <span class="cert-emoji">💻</span>
           <span class="cert-name-main">DIAT</span>
-          <span class="cert-subline">워드프로세서</span>
+          <span class="cert-subline">워드프로세서 고급</span>
+          <span class="cert-subline">2018.11</span>
           <span class="cert-org">(KAIT 한국정보<br>통신진흥협회)</span>
         </span>
 
-        <span class="cert-box">
+        <span class="cert-box" onclick="toggleCertImage('diat-sheet')">
           <span class="cert-emoji">💻</span>
           <span class="cert-name-main">DIAT</span>
-          <span class="cert-subline">스프레드시트</span>
+          <span class="cert-subline">스프레드시트 고급</span>
+          <span class="cert-subline">2019.03</span>
           <span class="cert-org">(KAIT 한국정보<br>통신진흥협회)</span>
         </span>
 
-        <span class="cert-box">
+        <span class="cert-box" onclick="toggleCertImage('kor-history')">
           <span class="cert-emoji">📜</span>
           <span class="cert-name-main">한국사</span>
-          <span class="cert-subline">능력검정시험</span>
-          <span class="cert-subline">3급</span>
+          <span class="cert-subline">능력검정시험 3급</span>
+          <span class="cert-subline">2020.07</span>
           <span class="cert-org">(국사편찬위원회)</span>
         </span>
       </div>
+
+      <!-- 자격증 사진/설명 공용 박스 -->
+      <div id="cert-desc-box" class="cert-description-area" data-current="">
+        <div class="cert-desc-title" style="font-weight:700; margin-bottom:2px;"></div>
+        <div class="cert-desc-org" style="font-size:12px; color:#0d47a1;"></div>
+        <img src="" alt="">
+      </div>
+
+      <!-- 앞으로의 계획 토글 버튼 -->
+      <div style="margin-top:12px;">
+        <button type="button"
+                onclick="toggleFutureCert()"
+                style="border:none; background:#1976d2; color:#fff; padding:6px 14px; border-radius:16px; font-size:12px; cursor:pointer;">
+          앞으로의 계획
+        </button>
+      </div>
+
+      <!-- 앞으로의 계획: 자격증 카드와 같은 형식 -->
+      <div id="future-cert-box" style="margin-top:10px; display:none;">
+        <div class="certs-list">
+          <span class="cert-box">
+            <span class="cert-emoji">🚗</span>
+            <span class="cert-name-main">운전면허</span>
+            <span class="cert-subline">2종 보통</span>
+            <span class="cert-subline">취득 예정: 2026 상반기</span>
+            <span class="cert-org">(도로교통공단)</span>
+          </span>
+
+          <span class="cert-box">
+            <span class="cert-emoji">🧯</span>
+            <span class="cert-name-main">위험물기능사</span>
+            <span class="cert-subline">국가기술자격</span>
+            <span class="cert-subline">취득 예정: 2026</span>
+            <span class="cert-org">(한국산업인력공단)</span>
+          </span>
+
+          <span class="cert-box">
+            <span class="cert-emoji">💻</span>
+            <span class="cert-name-main">컴퓨터활용능력</span>
+            <span class="cert-subline">1급</span>
+            <span class="cert-subline">취득 예정: 2026</span>
+            <span class="cert-org">(대한상공회의소)</span>
+          </span>
+        </div>
+      </div>
     </section>
 
-    <!-- 장학금 -->
+    <!-- 수상 · 장학금 -->
     <section class="section" id="scholar">
-      <div class="scholar-title">🎓 장학금</div>
+      <div class="scholar-title">🎓 수상 · 장학금</div>
+
+      <div class="scholarship-list" style="margin-bottom:4px;">
+        <div style="font-size:15px; font-weight:700; margin-bottom:4px;">수상</div>
+        <div class="scholar-box">2025-2 · 교내 · LC 포트폴리오 경진대회 우수상</div>
+      </div>
+
       <div class="scholarship-list">
+        <div style="font-size:15px; font-weight:700; margin-bottom:4px;">장학금</div>
         <div class="scholar-box">2025-1 · 교외 · 메가스터디교육㈜</div>
         <div class="scholar-box">2025-2 · 교내 · 성적우수장학금(우수)</div>
         <div class="scholar-box">2025-2 · 교내 · 학생성공 창의장학금 (받고싶음)</div>
@@ -531,7 +660,7 @@
       </div>
     </section>
 
-    <!-- 교과 -->
+    <!-- 교과 진행 현황 -->
     <section class="section" id="courses">
       <div class="course-title">📖 교과 진행 현황</div>
       <div class="course-header-circles">
@@ -551,7 +680,7 @@
         </tr>
 
         <tr class="course-row" onclick="toggleCourseDetail('core')">
-          <td>제1전공 전공코어</td><td>32</td><td>0</td><td>32</td>
+          <td>제1전공(화학) 전공코어</td><td>32</td><td>0</td><td>32</td>
           <td>
             <div class="course-statusbar">
               <div class="course-progress" style="width:0%"></div>
@@ -566,7 +695,7 @@
         </tr>
 
         <tr class="course-row" onclick="toggleCourseDetail('deep')">
-          <td>제1전공 전공심화</td><td>18</td><td>0</td><td>18</td>
+          <td>제1전공(화학) 전공심화</td><td>18</td><td>0</td><td>18</td>
           <td>
             <div class="course-statusbar">
               <div class="course-progress" style="width:0%"></div>
@@ -581,7 +710,7 @@
         </tr>
 
         <tr class="course-row" onclick="toggleCourseDetail('lab')">
-          <td>제1전공 실험실습</td><td>6</td><td>0</td><td>6</td>
+          <td>제1전공(화학) 실험실습</td><td>6</td><td>0</td><td>6</td>
           <td>
             <div class="course-statusbar">
               <div class="course-progress" style="width:0%"></div>
@@ -694,7 +823,7 @@
           <td>인문사회과학/자연과학기반(실습)</td><td>3</td><td>1</td><td>2</td>
           <td>
             <div class="course-statusbar">
-              <div class="course-progress" style="width:33.3%"></div>
+              <div class="course-progress" style="width:33.3%;"></div>
             </div>
             <div class="status-label">약 33% · 진행중</div>
           </td>
@@ -800,11 +929,121 @@
         </tr>
       </table>
 
-      <!-- 교과 안내문 추가 -->
       <div style="margin-top:10px; font-size:12px; color:#455a64; line-height:1.5;">
-        구분을 클릭하시면 영역별 세부 이수 현황(수강완료/수강중/수강예정)을 확인하실 수 있습니다.<br>
-        * 표시는 국제어수업을 통해 해당 교과를 이수하였음을 의미합니다.<br>
-        '인문사회과학/자연과학기반(실습)' 영역은 '인문사회과학/자연과학기반' 영역에 포함되나, 자연과학대학 졸업요건 충족 여부를 확인하기 위하여 별도로 	구분하였습니다.
+        · 구분을 클릭하시면 영역별 세부 이수 현황(수강완료/수강중/수강예정)을 확인하실 수 있습니다.<br>
+        · * 표시는 국제어수업을 통해 해당 교과를 이수하였음을 의미합니다.<br>
+        · '인문사회과학/자연과학기반(실습)' 영역은 '인문사회과학/자연과학기반' 영역에 포함되나, 자연과학대학 졸업요건 충족 여부를 확인하기 위하여 구분하였습니다.
+      </div>
+    </section>
+
+    <!-- 비교과프로그램 이수 현황 -->
+    <section class="section" id="noncourse">
+      <div class="course-title">📖 비교과프로그램 이수 현황</div>
+      <div class="scholarship-list">
+        <div class="scholar-box">2025 · 융합 · 처음하는 데이터분석, Python으로 따라하기 · 10시간</div>
+        <div class="scholar-box">2025 · 글로벌 · 비판적 사고(Critical Thinking) · 30시간</div>
+        <div class="scholar-box">2025 · 융합 · KT AICE Associate 자격증 취득 과정 · 10시간</div>
+        <div class="scholar-box">2025 · 자기주도성 · 성균튜터링 프로그램(튜티)</div>
+        <div class="scholar-box">2025 · 융합 · ChatGPT로 쉽게 하는 파이썬 데이터 분석 · 10시간</div>
+        <div class="scholar-box">2025 · 융합 · 실습으로 배우는 파이썬 텍스트 분석 with ChatGPT · 10시간</div>
+        <div class="scholar-box">2025 · 자기주도성 · [온라인] 제20회 대학원 학생성공스토리 특강 · 2시간</div>
+      </div>
+    </section>
+
+    <!-- 디지털 배지 & 3품 인증 -->
+    <section class="section" id="badge">
+      <div class="course-title">🏅 디지털 배지 &amp; 3품 인증</div>
+      <div class="flex-h" style="gap:24px;">
+        <div style="flex:1;">
+          <div style="background:#ffffff; border-radius:14px; padding:14px 16px; box-shadow:0 1px 6px #c4dcff66; height:100%;">
+            <div style="font-weight:700; font-size:15px; margin-bottom:6px; color:#0d47a1;">디지털 배지</div>
+            <div style="font-size:13px; color:#607d8b;">
+              아직 취득한 디지털 배지가 없습니다.<br>
+              교내·외 프로그램 참여 및 인증 완료 시 이 영역에 배지가 표시됩니다.
+            </div>
+          </div>
+        </div>
+
+        <div style="flex:1;">
+          <div style="background:#ffffff; border-radius:14px; padding:14px 16px; box-shadow:0 1px 6px #c4dcff66;">
+            <div style="font-weight:700; font-size:15px; margin-bottom:10px; color:#0d47a1;">3품 인증</div>
+
+            <!-- 인성품 -->
+            <div style="font-size:13px; font-weight:600; margin-bottom:6px; cursor:pointer;"
+                 onclick="toggleBadgeDetail('human')">
+              인성품
+            </div>
+            <div class="course-statusbar" style="margin-bottom:4px;">
+              <div class="course-progress" style="width:50%;"></div>
+            </div>
+            <div class="status-label" style="margin-bottom:6px;">20시간 / 40시간 · 50% 진행중</div>
+            <div id="badge-detail-human" style="display:none; font-size:12px; color:#455a64; margin-bottom:16px;">
+              교내봉사<br>
+              · 법정의무교육수강(아이캠퍼스) (5시간)<br>
+              교외봉사<br>
+              · 해당 없음
+            </div>
+
+            <!-- 글로벌품 -->
+            <div style="font-size:13px; font-weight:600; margin-bottom:6px; cursor:pointer;"
+                 onclick="toggleBadgeDetail('global')">
+              글로벌품
+            </div>
+            <div class="course-statusbar" style="margin-bottom:4px;">
+              <div class="course-progress" style="width:42.9%;"></div>
+            </div>
+            <div class="status-label" style="margin-bottom:6px;">
+              국제어수업 A0 이상 취득 · 9학점 / 21학점 · 약 43% 완료
+            </div>
+            <div id="badge-detail-global" style="display:none; font-size:12px; color:#455a64; margin-bottom:16px;">
+              · 미분적분학1 (3학점)<br>
+              · 일반화학1 (3학점)<br>
+              · 일반화학실험1 (1학점)<br>
+              · 과학영어 (2학점)<br>
+              · 일반물리학2 (3학점) (예정)<br>
+              · 일반화학2 (3학점) (예정)<br>
+              · 영어쓰기 (2학점) (예정)<br>
+            </div>
+
+            <!-- 창의품 -->
+            <div style="font-size:13px; font-weight:600; margin-bottom:6px; cursor:pointer;"
+                 onclick="toggleBadgeDetail('creative')">
+              창의품
+            </div>
+            <div class="course-statusbar" style="margin-bottom:4px;">
+              <div class="course-progress" style="width:46.7%;"></div>
+            </div>
+            <div class="status-label" style="margin-bottom:6px;">
+              비교과프로그램 이수 · 42시간 / 90시간 · 약 47% 완료
+            </div>
+            <div id="badge-detail-creative" style="display:none; font-size:12px; color:#455a64; margin-bottom:16px;">
+              · 성균튜터링 프로그램(튜티) (12시간)<br>
+              · 비판적 사고 (30시간)
+            </div>
+
+            <!-- AI품 -->
+            <div style="font-size:13px; font-weight:600; margin-bottom:6px; cursor:pointer;"
+                 onclick="toggleBadgeDetail('ai')">
+              AI품
+            </div>
+            <div class="course-statusbar" style="margin-bottom:4px;">
+              <div class="course-progress" style="width:66.7%;"></div>
+            </div>
+            <div class="status-label" style="margin-bottom:6px;">
+              AI교과교육 이수 · 6학점 / 9학점 · 약 67% 완료
+            </div>
+            <div id="badge-detail-ai" style="display:none; font-size:12px; color:#455a64; margin-bottom:10px;">
+             · 문제해결과컴퓨팅사고 (3학점)<br>
+              · AI기반전략적의사결정 (3학점)<br>
+              · 데이터분석과AI기초 (3학점) (예정)
+            </div>
+
+            <div style="font-size:12px; color:#607d8b; margin-top:4px;">
+              · 인성품(필수)을 포함한 3개 영역에서 인증을 취득해야 합니다.<br>
+              · 각 항목을 클릭하면 세부 진행 현황을 확인하실 수 있습니다.
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -812,18 +1051,53 @@
     <section class="section" id="program">
       <div class="program-title">📚 프로그램</div>
       <div class="program-card">
-        <!-- 프로그램 사진 경로 바꾸기 -->
-        <img src="program_photo.jpg" alt="2025 2학기 LC 포트폴리오 경진대회" class="program-photo">
+        <img src="e-portfolio.jpg" alt="프로그램 참여 예정" class="program-photo">
         <div class="program-desc">
-          2025 2학기<br><span class="program-name">LC 포트폴리오 경진대회 (우수상)</span>
+          2026 2학기<br><span class="program-name">학생성공 e-포트폴리오 공모전 (예정)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 목표와 비전 -->
+    <section class="section" id="vision">
+      <div class="course-title">🗺️ 목표와 비전</div>
+
+      <div style="background:#ffffff; border-radius:14px; padding:12px 16px; box-shadow:0 1px 6px #c4dcff66; margin-bottom:10px;">
+        <div style="font-size:14px; font-weight:700; margin-bottom:4px;">단기</div>
+        <div style="font-size:13px; margin-bottom:4px;">
+          학업 역량 키우기, 교내외 프로그램 적극 참여
+        </div>
+        <div style="font-size:12px; color:#0d47a1; cursor:pointer; text-decoration:underline; display:inline-block;"
+             onclick="toggleVisionDetail('short')">
+          자세히 보기
+        </div>
+        <div id="vision-short" style="display:none; margin-top:8px; font-size:12px; color:#455a64; line-height:1.5;">
+          ☐ 제1전공 전공코어, 전공심화 수업 체계적으로 수강하기<br>
+          ☐ 학부생 연구학점제(URP 1형) 참여로 연구 경험 쌓기
+        </div>
+      </div>
+
+      <div style="background:#ffffff; border-radius:14px; padding:12px 16px; box-shadow:0 1px 6px #c4dcff66; margin-bottom:10px;">
+        <div style="font-size:14px; font-weight:700; margin-bottom:4px;">중기</div>
+        <div style="font-size:13px;">
+          대학원 진학 준비 및 연구 경험 확보
+        </div>
+      </div>
+
+      <div style="background:#ffffff; border-radius:14px; padding:12px 16px; box-shadow:0 1px 6px #c4dcff66;">
+        <div style="font-size:14px; font-weight:700; margin-bottom:4px;">장기</div>
+        <div style="font-size:13px;">
+          연구자로 성장하여 의미 있는 연구를 이어가기
         </div>
       </div>
     </section>
   </main>
 
-  <!-- 하단 카피라이트 -->
+  </main>
+
   <footer style="text-align:center; padding:12px 0 16px; font-size:12px; color:#607d8b;">
-    ⓒ 2025 Sungjun Im
+    ⓒ 2025 Sungjun Im<br>
+    All rights reserved.
   </footer>
 </body>
 </html>
